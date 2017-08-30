@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:async';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {
   runApp(new MyApp());
 }
 
-const String _name = "Leo";   // Hardcoded for simplicity
+final googleSignIn = new GoogleSignIn();
+final analytics = new FirebaseAnalytics();
+final auth = FirebaseAuth.instance;
 
 // iOS
 final ThemeData kIOSTheme = new ThemeData(
@@ -126,23 +132,47 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     );
   }
 
-  void _handleSubmitted(String text) {
+  Future<Null> _handleSubmitted(String text) async {
     _textController.clear();
     setState(() {
       _isComposing = false;
     });
 
+    await _ensureLoggedIn();
+    _sendMessage(text: text);
+  }
+
+  void _sendMessage({ String text }) {
     ChatMessage message = new ChatMessage(
-        text: text,
-        animationController: new AnimationController(
-          duration: new Duration(milliseconds: 350),
-          vsync: this,
-        )
+      text: text,
+      animationController: new AnimationController(
+        duration: new Duration(milliseconds: 400),
+        vsync: this,
+      ),
     );
     setState(() {
       _messages.insert(0, message);
     });
     message.animationController.forward();
+    analytics.logEvent(name: 'send_message');
+  }
+
+  Future<Null> _ensureLoggedIn() async {
+    GoogleSignInAccount user = googleSignIn.currentUser;
+    if (user == null)
+      user = await googleSignIn.signInSilently();
+    if (user == null) {
+      await googleSignIn.signIn();
+      analytics.logLogin();
+    }
+    if (auth.currentUser == null) {                                  //new
+      GoogleSignInAuthentication credentials =                       //new
+      await googleSignIn.currentUser.authentication;                 //new
+      await auth.signInWithGoogle(                                   //new
+        idToken: credentials.idToken,                                //new
+        accessToken: credentials.accessToken,                        //new
+      );                                                             //new
+    }
   }
 }
 
@@ -166,12 +196,15 @@ class ChatMessage extends StatelessWidget {
           children: <Widget>[
             new Container(
               margin: const EdgeInsets.only(right: 16.0),
-              child: new CircleAvatar(child: new Text(_name[0])),
+              child: new CircleAvatar(
+                  child: new Text(googleSignIn.currentUser.displayName[0])
+              ),
             ),
             new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Text(_name, style: Theme.of(context).textTheme.subhead),
+                new Text(googleSignIn.currentUser.displayName,
+                    style: Theme.of(context).textTheme.subhead),
                 new Container(
                   margin: const EdgeInsets.only(top: 5.0),
                   child: new Text(text),

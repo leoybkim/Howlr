@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "78420487919",
+    "firebase_url": "https://howlr-6d80b.firebaseio.com",
+    "project_id": "howlr-6d80b",
+    "storage_bucket": "howlr-6d80b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78420487919:android:1fd459034eceb6c1",
+        "android_client_info": {
+          "package_name": "com.yourcompany.howlr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "78420487919-3te04d8vacbbk44cae10es77hss8mceu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yourcompany.howlr",
+            "certificate_hash": "50c2a4f9fa5c390fee865df0dcdd2f64a01b8231"
+          }
+        },
+        {
+          "client_id": "78420487919-3v4v5ljfj9uniueq69neb73t96vcjaac.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXpKKHUBd4sxGjs5jxmNBCg9inwNSBRY0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "78420487919-3v4v5ljfj9uniueq69neb73t96vcjaac.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

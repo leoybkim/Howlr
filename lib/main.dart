@@ -23,15 +23,15 @@ final reference = FirebaseDatabase.instance.reference().child('messages');
 
 // iOS
 final ThemeData kIOSTheme = new ThemeData(
-  primarySwatch: Colors.orange,
+  primarySwatch: Colors.indigo,
   primaryColor: Colors.grey[100],
   primaryColorBrightness: Brightness.light,
 );
 
 // Android
 final ThemeData kDefaultTheme = new ThemeData(
-  primarySwatch: Colors.purple,
-  accentColor: Colors.orangeAccent[400],
+  primarySwatch: Colors.indigo,
+  accentColor: Colors.indigoAccent[400],
 );
 
 class MyApp extends StatelessWidget {
@@ -60,7 +60,7 @@ class ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Chat"),
+        title: _buildAppTitle(context),
         elevation:
           Theme.of(context).platform == TargetPlatform.iOS? 0.0 : 4.0,
       ),
@@ -89,6 +89,17 @@ class ChatScreenState extends State<ChatScreen> {
           ],
         ),
     );
+  }
+
+  Widget _buildAppTitle(BuildContext context) {
+    return new Row(children: <Widget>[
+      new Container(
+        margin: const EdgeInsets.only(left: 8.0, right: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+        child: new Icon(Icons.pets),
+      ),
+      new Text('Howlr')
+    ]);
   }
 
   Widget _buildTextComposer() {
